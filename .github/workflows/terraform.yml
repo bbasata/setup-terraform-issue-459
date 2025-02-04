@@ -19,7 +19,9 @@ jobs:
           terraform_version: 1.10.5
 
       - name: Locate Terraform binary
-        run: bash -c 'echo $TERRAFORM_CLI_PATH'
+        run: bash -c 'stat $TERRAFORM_CLI_PATH/terraform-bin'
 
       - name: Terraform Version Debug
-        run: terraform version
+        run: |
+          terraform version || true
+          coredumpctl info --no-pager "$TERRAFORM_CLI_PATH/terraform-bin"
