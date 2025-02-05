@@ -1,0 +1,29 @@
+name: Terraform
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform-init-plan:
+    name: Terraform Init and Plan
+    runs-on: ubuntu-24.04-arm
+    strategy:
+      fail-fast: false
+      matrix:
+        i: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+
+      - name: Locate Terraform binary
+        run: bash -c 'stat $TERRAFORM_CLI_PATH/terraform-bin'
+
+      - name: Terraform Version Debug
+        run: |
+          terraform version || true
+          coredumpctl info --no-pager "$TERRAFORM_CLI_PATH/terraform-bin" || true
